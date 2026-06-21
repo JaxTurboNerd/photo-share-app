@@ -13,14 +13,18 @@ export default function PhotoGrid({ photos, onPhotoClick }) {
         }}
         spacing={16}
         onClick={({ index }) => onPhotoClick(index)}
-        render={{
-          photo: (props, { photo }) => (
-            <img
-              {...props}
-              alt={photo.alt}
-              className="rounded-md cursor-pointer hover:opacity-90 transition-opacity"
-            />
-          ),
+        renderPhoto={({ photo, wrapperStyle, renderDefaultPhoto }) => {
+          const name = photo.alt?.replace(/\.[^.]+$/, '')
+          return (
+            <div className="relative" style={wrapperStyle}>
+              {renderDefaultPhoto({ wrapped: true })}
+              {name && (
+                <span className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-sm px-2 py-1 rounded-b-md truncate pointer-events-none">
+                  {name}
+                </span>
+              )}
+            </div>
+          )
         }}
       />
     </div>

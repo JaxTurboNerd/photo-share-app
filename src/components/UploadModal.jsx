@@ -19,10 +19,17 @@ export default function UploadModal({ open, onClose, onUploaded }) {
 
   async function handleUpload() {
     if (!file) return
+    if (!caption.trim()) {
+      setError("Please enter the dog's name before sharing.")
+      return
+    }
     setUploading(true)
     setError(null)
     try {
-      await storage.createFile(PHOTOS_BUCKET_ID, ID.unique(), file)
+      const ext = file.name.split('.').pop()
+      const fileName = caption.trim() ? `${caption.trim()}.${ext}` : file.name
+      const namedFile = new File([file], fileName, { type: file.type })
+      await storage.createFile(PHOTOS_BUCKET_ID, ID.unique(), namedFile)
 
       onUploaded?.()
       handleClose()
@@ -57,10 +64,11 @@ export default function UploadModal({ open, onClose, onUploaded }) {
 
         <input
           type="text"
-          placeholder="Add a caption (optional)"
+          placeholder="Dog's name"
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           className="w-full border border-line rounded-md px-3 py-2 text-sm mb-4 bg-canvas focus:outline-none focus:border-ink/40"
+          required
         />
 
         {error && <p className="text-sm text-red-700 mb-3">{error}</p>}

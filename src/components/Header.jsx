@@ -5,7 +5,6 @@ export default function Header() {
         <h1 className="text-xl sm:text-2xl font-medium tracking-tightish text-ink">
           Rossi Notes Picture Gallery
         </h1>
-        <p className="text-sm text-muted mt-0.5">JHS shared photos</p>
       </div>
       <button
         type="button"
