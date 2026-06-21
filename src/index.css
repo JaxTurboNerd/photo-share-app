@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-main: #F6F4F3;
+  --accent: #304D6D;
+  --text-color: #1A1A18;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #31353D;
+    --text-color: #F6F4F3;
+  }
+}
+
+html, body {
+  background-color: var(--bg-main);
+  color: var(--text-color);
+  font-family: 'Urbanist', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-family: 'Concert One', cursive;
+  color: var(--text-color);
+}
+
+* {
+  box-sizing: border-box;
+}

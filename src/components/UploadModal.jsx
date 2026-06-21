@@ -1,0 +1,88 @@
+import { useState } from 'react'
+import { storage, ID, PHOTOS_BUCKET_ID } from '../lib/appwrite'
+
+export default function UploadModal({ open, onClose, onUploaded }) {
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [caption, setCaption] = useState('')
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState(null)
+
+  if (!open) return null
+
+  function handleFileChange(e) {
+    const selected = e.target.files?.[0]
+    if (!selected) return
+    setFile(selected)
+    setPreview(URL.createObjectURL(selected))
+  }
+
+  async function handleUpload() {
+    if (!file) return
+    setUploading(true)
+    setError(null)
+    try {
+      await storage.createFile(PHOTOS_BUCKET_ID, ID.unique(), file)
+
+      onUploaded?.()
+      handleClose()
+    } catch (err) {
+      setError(err.message || 'Upload failed. Check your Appwrite config in .env')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  function handleClose() {
+    setFile(null)
+    setPreview(null)
+    setCaption('')
+    setError(null)
+    onClose()
+  }
+
+  return (
+    <div className="fixed inset-0 bg-ink/40 flex items-center justify-center z-50 px-4">
+      <div className="bg-canvas rounded-lg w-full max-w-sm p-6 border border-line">
+        <h2 className="text-lg font-medium text-ink mb-4">Share a photo</h2>
+
+        {preview ? (
+          <img src={preview} alt="Selected preview" className="w-full rounded-md mb-4 max-h-64 object-cover" />
+        ) : (
+          <label className="flex flex-col items-center justify-center border border-dashed border-line rounded-md h-40 mb-4 cursor-pointer hover:bg-line/30 transition-colors">
+            <span className="text-sm text-muted">Tap to choose a photo</span>
+            <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+          </label>
+        )}
+
+        <input
+          type="text"
+          placeholder="Add a caption (optional)"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          className="w-full border border-line rounded-md px-3 py-2 text-sm mb-4 bg-canvas focus:outline-none focus:border-ink/40"
+        />
+
+        {error && <p className="text-sm text-red-700 mb-3">{error}</p>}
+
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="flex-1 border border-line rounded-md py-2 text-sm text-ink hover:bg-line/30 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleUpload}
+            disabled={!file || uploading}
+            className="flex-1 bg-ink text-canvas rounded-md py-2 text-sm disabled:opacity-40"
+          >
+            {uploading ? 'Uploading…' : 'Share'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"--.*background\\\\|--.*bg\" /Users/gboyd69/Developer/React_Projects/photo-share-app/src --include=\"*.css\" --include=\"*.scss\" -l)"
+    ]
+  }
+}
