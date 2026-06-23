@@ -2,8 +2,8 @@ export default function Header() {
   return (
     <header className="flex items-center justify-between px-5 py-6 sm:px-8 sm:py-8 max-w-6xl mx-auto">
       <div>
-        <h1 className="text-xl sm:text-2xl font-medium tracking-tightish text-ink">
-          Rossi Notes Picture Gallery
+        <h1 className="text-3xl sm:text-4xl font-medium tracking-tightish text-ink">
+          JHS Volunteer Picture Gallery
         </h1>
       </div>
       <button

@@ -19,7 +19,7 @@ export default function PhotoGrid({ photos, onPhotoClick }) {
             <div className="relative" style={wrapperStyle}>
               {renderDefaultPhoto({ wrapped: true })}
               {name && (
-                <span className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-sm px-2 py-1 rounded-b-md truncate pointer-events-none">
+                <span className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-base px-3 py-2 rounded-b-md truncate pointer-events-none">
                   {name}
                 </span>
               )}

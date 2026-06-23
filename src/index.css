@@ -13,6 +13,9 @@
     --bg-main: #31353D;
     --text-color: #F6F4F3;
   }
+  img {
+    filter: brightness(0.85);
+  }
 }
 
 html, body {
