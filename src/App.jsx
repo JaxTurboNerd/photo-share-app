@@ -6,6 +6,11 @@ import UploadButton from './components/UploadButton.jsx'
 import UploadModal from './components/UploadModal.jsx'
 import { storage, PHOTOS_BUCKET_ID } from './lib/appwrite.js'
 
+function renameFile(originalName, newName) {
+  const ext = originalName.includes('.') ? originalName.split('.').pop() : ''
+  return ext ? `${newName}.${ext}` : newName
+}
+
 function getImageDimensions(url) {
   return new Promise((resolve) => {
     const img = new Image()
@@ -40,10 +45,18 @@ export default function App() {
     fetchPhotos()
   }, [fetchPhotos])
 
+  async function handleRename(photo, newName) {
+    const newFileName = renameFile(photo.alt, newName)
+    await storage.updateFile(PHOTOS_BUCKET_ID, photo.id, newFileName)
+    setPhotos((prev) =>
+      prev.map((p) => (p.id === photo.id ? { ...p, alt: newFileName } : p))
+    )
+  }
+
   return (
     <div className="min-h-screen bg-canvas">
       <Header />
-      <PhotoGrid photos={photos} onPhotoClick={setLightboxIndex} />
+      <PhotoGrid photos={photos} onPhotoClick={setLightboxIndex} onRename={handleRename} />
       <PhotoLightbox
         photos={photos}
         index={lightboxIndex}
