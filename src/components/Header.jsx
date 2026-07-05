@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="flex items-center justify-between px-5 py-6 sm:px-8 sm:py-8 max-w-6xl mx-auto">
+    <header className="sticky top-0 z-40 bg-canvas flex items-center justify-between px-5 py-6 sm:px-8 sm:py-8 max-w-6xl mx-auto">
       <div>
         <h1 className="text-3xl sm:text-4xl font-medium tracking-tightish text-ink">
           JHS Volunteer Picture Gallery
