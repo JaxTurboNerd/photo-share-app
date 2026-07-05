@@ -48,7 +48,7 @@ export default function PhotoGrid({ photos, onPhotoClick, onRename }) {
           const name = photo.alt?.replace(/\.[^.]+$/, '')
           const isEditing = editingId === photo.id
           return (
-            <div className="relative" style={wrapperStyle}>
+            <div className="relative photo-card" style={wrapperStyle}>
               {renderDefaultPhoto({ wrapped: true })}
               {isEditing ? (
                 <div

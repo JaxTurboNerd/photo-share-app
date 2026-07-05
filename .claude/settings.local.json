@@ -3,7 +3,11 @@
     "allow": [
       "Bash(grep -r \"--.*background\\\\|--.*bg\" /Users/gboyd69/Developer/React_Projects/photo-share-app/src --include=\"*.css\" --include=\"*.scss\" -l)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(lsof -i :5173 -sTCP:LISTEN)",
+      "Bash(kill 74517)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
