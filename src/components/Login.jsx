@@ -27,7 +27,7 @@ export default function Login() {
         <h1 className="text-3xl sm:text-4xl font-medium tracking-tightish text-ink mb-2">
           JHS Volunteer Picture Gallery
         </h1>
-        <p className="text-sm text-muted">Sign in with your volunteer app account</p>
+        <p className="text-sm text-muted">Sign in with your Rossi Notes account credentials</p>
       </div>
 
       <form
