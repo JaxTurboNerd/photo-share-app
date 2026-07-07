@@ -4,7 +4,9 @@ import PhotoGrid from './components/PhotoGrid.jsx'
 import PhotoLightbox from './components/Lightbox.jsx'
 import UploadButton from './components/UploadButton.jsx'
 import UploadModal from './components/UploadModal.jsx'
+import Login from './components/Login.jsx'
 import { storage, PHOTOS_BUCKET_ID } from './lib/appwrite.js'
+import { useAuth } from './context/AuthContext.jsx'
 
 function renameFile(originalName, newName) {
   const ext = originalName.includes('.') ? originalName.split('.').pop() : ''
@@ -21,6 +23,7 @@ function getImageDimensions(url) {
 }
 
 export default function App() {
+  const { user, loading } = useAuth()
   const [photos, setPhotos] = useState([])
   const [lightboxIndex, setLightboxIndex] = useState(-1)
   const [uploadOpen, setUploadOpen] = useState(false)
@@ -42,8 +45,8 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    fetchPhotos()
-  }, [fetchPhotos])
+    if (user) fetchPhotos()
+  }, [user, fetchPhotos])
 
   async function handleRename(photo, newName) {
     const newFileName = renameFile(photo.alt, newName)
@@ -52,6 +55,10 @@ export default function App() {
       prev.map((p) => (p.id === photo.id ? { ...p, alt: newFileName } : p))
     )
   }
+
+  if (loading) return <div className="min-h-screen bg-canvas" />
+
+  if (!user) return <Login />
 
   return (
     <div className="min-h-screen bg-canvas">
