@@ -6,13 +6,11 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-40 bg-canvas flex items-center justify-between px-5 py-6 sm:px-8 sm:py-8 max-w-6xl mx-auto">
-      <div>
-        <h1 className="text-3xl sm:text-4xl font-medium tracking-tightish text-ink">
-          JHS Volunteer Picture Gallery
-        </h1>
-      </div>
-      <div className="relative">
+    <header className="sticky top-0 z-40 bg-canvas px-5 py-6 sm:px-8 sm:py-8 max-w-6xl mx-auto sm:flex sm:items-center sm:justify-between">
+      <h1 className="text-3xl sm:text-4xl font-medium tracking-tightish text-ink text-center sm:text-left mb-4 sm:mb-0">
+        JHS Volunteer Picture Gallery
+      </h1>
+      <div className="relative flex justify-end sm:block">
         <button
           type="button"
           aria-label="Menu"
