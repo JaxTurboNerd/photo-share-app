@@ -49,14 +49,14 @@ export default function UploadModal({ open, onClose, onUploaded }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-ink/40 flex items-center justify-center z-50 px-4">
-      <div className="bg-canvas rounded-lg w-full max-w-sm p-6 border border-line">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+      <div className="bg-canvas rounded-lg w-full max-w-sm p-6 border border-ink/15 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
         <h2 className="text-lg font-medium text-ink mb-4">Share a photo</h2>
 
         {preview ? (
           <img src={preview} alt="Selected preview" className="w-full rounded-md mb-4 max-h-64 object-cover" />
         ) : (
-          <label className="flex flex-col items-center justify-center border border-dashed border-line rounded-md h-40 mb-4 cursor-pointer hover:bg-line/30 transition-colors">
+          <label className="flex flex-col items-center justify-center border border-dashed border-ink/25 rounded-md h-40 mb-4 cursor-pointer bg-black/5 hover:bg-black/10 transition-colors">
             <span className="text-sm text-muted">Tap to choose a photo</span>
             <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
           </label>
@@ -67,7 +67,7 @@ export default function UploadModal({ open, onClose, onUploaded }) {
           placeholder="Dog's name"
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
-          className="w-full border border-line rounded-md px-3 py-2 text-sm mb-4 bg-canvas focus:outline-none focus:border-ink/40"
+          className="w-full border-2 border-muted rounded-md px-3 py-2 text-sm mb-4 bg-canvas focus:outline-none focus:border-accent"
           required
         />
 
@@ -77,7 +77,7 @@ export default function UploadModal({ open, onClose, onUploaded }) {
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 border border-line rounded-md py-2 text-sm text-ink hover:bg-line/30 transition-colors"
+            className="flex-1 border-2 border-muted rounded-md py-2 text-sm text-ink hover:bg-line/30 transition-colors"
           >
             Cancel
           </button>
@@ -85,7 +85,7 @@ export default function UploadModal({ open, onClose, onUploaded }) {
             type="button"
             onClick={handleUpload}
             disabled={!file || uploading}
-            className="flex-1 bg-ink text-canvas rounded-md py-2 text-sm disabled:opacity-40"
+            className="flex-1 bg-accent text-white rounded-md py-2 text-sm font-medium hover:brightness-110 transition disabled:opacity-40"
           >
             {uploading ? 'Uploading…' : 'Share'}
           </button>
