@@ -13,15 +13,18 @@ export default function Header() {
       <div className="relative flex justify-end sm:block">
         <button
           type="button"
-          aria-label="Menu"
+          aria-label="Account menu"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
-          className="w-9 h-9 flex items-center justify-center rounded-full text-ink hover:bg-line/60 transition-colors"
+          className="w-9 h-9 flex items-center justify-center rounded-full bg-accent text-white text-sm font-medium uppercase hover:brightness-110 transition"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
+          {user?.email?.[0]?.toUpperCase() ?? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+          )}
         </button>
 
         {menuOpen && (
