@@ -3,16 +3,45 @@ import { account } from '../lib/appwrite'
 
 const AuthContext = createContext(null)
 
+// Consume a one-time login token handed off from the iOS app via the URL
+// fragment (#userId=…&secret=…). Establishes a real session, then strips the
+// token from the URL so it isn't left in browser history.
+async function consumeLoginHandoff() {
+  const hash = window.location.hash.replace(/^#/, '')
+  if (!hash) return
+  const params = new URLSearchParams(hash)
+  const userId = params.get('userId')
+  const secret = params.get('secret')
+  if (!userId || !secret) return
+
+  try {
+    await account.createSession(userId, secret)
+  } catch (err) {
+    console.error('App login handoff failed:', err)
+  } finally {
+    // Remove the token from the URL + history immediately.
+    history.replaceState(null, '', window.location.pathname + window.location.search)
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    account
-      .get()
-      .then(setUser)
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false))
+    let active = true
+    ;(async () => {
+      await consumeLoginHandoff()          // <-- runs before the session check
+      try {
+        const current = await account.get()
+        if (active) setUser(current)
+      } catch {
+        if (active) setUser(null)
+      } finally {
+        if (active) setLoading(false)
+      }
+    })()
+    return () => { active = false }
   }, [])
 
   const login = useCallback(async (email, password) => {
