@@ -15,9 +15,9 @@ export default function Header() {
           type="button"
           aria-label="Menu"
           onClick={() => setMenuOpen((open) => !open)}
-          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-line/60 transition-colors"
+          className="w-9 h-9 flex items-center justify-center rounded-full text-ink hover:bg-line/60 transition-colors"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444441" strokeWidth="1.8" strokeLinecap="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="12" x2="21" y2="12" />
             <line x1="3" y1="18" x2="21" y2="18" />
