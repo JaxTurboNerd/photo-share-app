@@ -5,7 +5,7 @@ import PhotoLightbox from './components/Lightbox.jsx'
 import UploadButton from './components/UploadButton.jsx'
 import UploadModal from './components/UploadModal.jsx'
 import Login from './components/Login.jsx'
-import { storage, PHOTOS_BUCKET_ID } from './lib/appwrite.js'
+import { storage, PHOTOS_BUCKET_ID, ownerIdFromPermissions } from './lib/appwrite.js'
 import { useAuth } from './context/AuthContext.jsx'
 
 function renameFile(originalName, newName) {
@@ -35,7 +35,14 @@ export default function App() {
         response.files.map(async (file) => {
           const url = storage.getFilePreview(PHOTOS_BUCKET_ID, file.$id, 800)
           const { width, height } = await getImageDimensions(url)
-          return { id: file.$id, src: url, width, height, alt: file.name }
+          return {
+            id: file.$id,
+            src: url,
+            width,
+            height,
+            alt: file.name,
+            ownerId: ownerIdFromPermissions(file.$permissions),
+          }
         })
       )
       setPhotos(items)
@@ -56,6 +63,23 @@ export default function App() {
     )
   }
 
+  async function handleDelete(photo) {
+    // Only the uploader may delete. Appwrite also enforces this server-side,
+    // but we gate here so others get a clear message instead of a raw error.
+    if (photo.ownerId !== user.$id) {
+      window.alert('You can only delete photos that you uploaded.')
+      return
+    }
+    if (!window.confirm('Delete this photo? This cannot be undone.')) return
+    try {
+      await storage.deleteFile(PHOTOS_BUCKET_ID, photo.id)
+      setPhotos((prev) => prev.filter((p) => p.id !== photo.id))
+    } catch (err) {
+      console.error('Failed to delete photo:', err)
+      window.alert('Something went wrong deleting this photo. Please try again.')
+    }
+  }
+
   if (loading) return <div className="min-h-screen bg-canvas" />
 
   if (!user) return <Login />
@@ -63,7 +87,13 @@ export default function App() {
   return (
     <div className="min-h-screen bg-canvas">
       <Header />
-      <PhotoGrid photos={photos} onPhotoClick={setLightboxIndex} onRename={handleRename} />
+      <PhotoGrid
+        photos={photos}
+        currentUserId={user.$id}
+        onPhotoClick={setLightboxIndex}
+        onRename={handleRename}
+        onDelete={handleDelete}
+      />
       <PhotoLightbox
         photos={photos}
         index={lightboxIndex}

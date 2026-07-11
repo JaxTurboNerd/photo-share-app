@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PhotoAlbum from 'react-photo-album'
 
-export default function PhotoGrid({ photos, onPhotoClick, onRename }) {
+export default function PhotoGrid({ photos, currentUserId, onPhotoClick, onRename, onDelete }) {
   const [editingId, setEditingId] = useState(null)
   const [editValue, setEditValue] = useState('')
   const [editError, setEditError] = useState(null)
@@ -92,18 +92,37 @@ export default function PhotoGrid({ photos, onPhotoClick, onRename }) {
                 name && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-base px-3 py-2 rounded-b-md flex items-center gap-2">
                     <span className="truncate flex-1 pointer-events-none">{name}</span>
+                    {photo.ownerId === currentUserId && (
+                      <button
+                        type="button"
+                        aria-label="Edit name"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          startEditing(photo, name)
+                        }}
+                        className="shrink-0 opacity-80 hover:opacity-100"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 20h9" />
+                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                        </svg>
+                      </button>
+                    )}
                     <button
                       type="button"
-                      aria-label="Edit name"
+                      aria-label="Delete photo"
                       onClick={(e) => {
                         e.stopPropagation()
-                        startEditing(photo, name)
+                        onDelete?.(photo)
                       }}
                       className="shrink-0 opacity-80 hover:opacity-100"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                        <path d="M10 11v6" />
+                        <path d="M14 11v6" />
+                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                       </svg>
                     </button>
                   </div>

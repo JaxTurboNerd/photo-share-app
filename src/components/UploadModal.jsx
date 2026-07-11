@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { storage, ID, PHOTOS_BUCKET_ID } from '../lib/appwrite'
+import { storage, ID, Permission, Role, PHOTOS_BUCKET_ID } from '../lib/appwrite'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function UploadModal({ open, onClose, onUploaded }) {
+  const { user } = useAuth()
   const [file, setFile] = useState(null)
   const [preview, setPreview] = useState(null)
   const [caption, setCaption] = useState('')
@@ -29,7 +31,15 @@ export default function UploadModal({ open, onClose, onUploaded }) {
       const ext = file.name.split('.').pop()
       const fileName = caption.trim() ? `${caption.trim()}.${ext}` : file.name
       const namedFile = new File([file], fileName, { type: file.type })
-      await storage.createFile(PHOTOS_BUCKET_ID, ID.unique(), namedFile)
+      // Any signed-in user can view the photo, but only the uploader can
+      // rename or delete it. Appwrite enforces this server-side (bucket file
+      // security), so ownership can't be bypassed from the client.
+      const permissions = [
+        Permission.read(Role.users()),
+        Permission.update(Role.user(user.$id)),
+        Permission.delete(Role.user(user.$id)),
+      ]
+      await storage.createFile(PHOTOS_BUCKET_ID, ID.unique(), namedFile, permissions)
 
       onUploaded?.()
       handleClose()
