@@ -7,7 +7,11 @@
       "Bash(lsof -i :5173 -sTCP:LISTEN)",
       "Bash(kill 74517)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(appwrite -v)",
+      "Bash(appwrite whoami *)",
+      "Bash(node -e \"const a=require\\('appwrite'\\); console.log\\('Permission:', typeof a.Permission, 'Role:', typeof a.Role\\); console.log\\(Object.keys\\(a\\).filter\\(k=>['Permission','Role','ID','Query'].includes\\(k\\)\\)\\)\")",
+      "Bash(npx vite *)"
     ]
   }
 }
