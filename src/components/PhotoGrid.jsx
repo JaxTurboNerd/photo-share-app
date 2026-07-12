@@ -115,7 +115,7 @@ export default function PhotoGrid({ photos, currentUserId, onPhotoClick, onRenam
                         e.stopPropagation()
                         onDelete?.(photo)
                       }}
-                      className="shrink-0 opacity-80 hover:opacity-100"
+                      className="shrink-0 ml-3 sm:ml-0 opacity-80 hover:opacity-100"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="3 6 5 6 21 6" />
