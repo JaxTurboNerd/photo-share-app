@@ -11,7 +11,9 @@
       "Bash(appwrite -v)",
       "Bash(appwrite whoami *)",
       "Bash(node -e \"const a=require\\('appwrite'\\); console.log\\('Permission:', typeof a.Permission, 'Role:', typeof a.Role\\); console.log\\(Object.keys\\(a\\).filter\\(k=>['Permission','Role','ID','Query'].includes\\(k\\)\\)\\)\")",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(git checkout *)",
+      "Bash(gh auth *)"
     ]
   }
 }
