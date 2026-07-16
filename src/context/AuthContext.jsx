@@ -36,7 +36,16 @@ export function AuthProvider({ children }) {
         const current = await account.get()
         if (active) setUser(current)
       } catch {
-        if (active) setUser(null)
+        // TEMP: auto-guest access so testers can view/upload/delete without
+        // signing in. Remove this inner try/catch (and restore `setUser(null)`)
+        // to bring back the login requirement.
+        try {
+          await account.createAnonymousSession()
+          if (active) setUser(await account.get())
+        } catch (err) {
+          console.error('Anonymous session failed:', err)
+          if (active) setUser(null)
+        }
       } finally {
         if (active) setLoading(false)
       }
